@@ -1,17 +1,38 @@
 const db = require('../../data/dbConfig.js')
 
-// write functions for CRUD operations
+function getAll() {
+    return db('characters')
+}
 
-//getAll()
+function getById(id) {
+    return db('characters')
+        .where({ id })
+        .first()
+}
 
-//getById()
+async function insert(character) {
+    const [id] = await db('characters').insert(character, 'id')
+    return getById(id)
+}
 
-//insert()
+async function update(id, changes) {
+    await db('characters')
+        .where({ id })
+        .update(changes)
+    return getById(id)
+}
 
-//update()
-
-//remove()
+async function remove(id) {
+    await db('characters')
+        .where({ id })
+        .del()
+    return getAll()
+}
 
 module.exports = {
-  //add model functions here for exporting
+  getAll,
+  getById,
+  insert,
+  update,
+  remove
 }
